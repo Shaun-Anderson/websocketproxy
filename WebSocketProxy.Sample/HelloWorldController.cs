@@ -6,7 +6,11 @@ namespace WebSocketProxy.Sample
     {
         public HelloWorldController()
         {
-            Get["/"] = v => View["Content/index.html"];
-        }
-    }
+			Get("/", (parameters) =>
+			{
+				return View["index.html"];
+			});
+
+		}
+	}
 }

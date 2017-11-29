@@ -2,6 +2,7 @@
 using System.Net;
 using Fleck;
 using Nancy.Hosting.Self;
+using Nancy.Bootstrapper;
 
 namespace WebSocketProxy.Sample
 {
@@ -9,7 +10,7 @@ namespace WebSocketProxy.Sample
     {
         static void Main(string[] args)
         {
-            TcpProxyConfiguration configuration = new TcpProxyConfiguration()
+            WebSocketProxy.TcpProxyConfiguration configuration = new TcpProxyConfiguration()
             {
                 PublicHost = new Host()
                 {
@@ -28,13 +29,14 @@ namespace WebSocketProxy.Sample
                     Port = 8082
                 }
             };
-            
 
-            using (var nancyHost = new NancyHost(new Uri("http://localhost:8081")))
-            using (var websocketServer = new WebSocketServer("ws://0.0.0.0:8082"))
+			using (var nancyHost = new NancyHost(new Uri("http://localhost:8081")))
+
+			using (var websocketServer = new WebSocketServer("ws://0.0.0.0:8082"))
             using (var tcpProxy = new TcpProxyServer(configuration))
             {
-                nancyHost.Start();
+				
+				nancyHost.Start();
                 websocketServer.Start(connection =>
                 {
                     connection.OnOpen = () => Console.WriteLine("COnnection on open");
